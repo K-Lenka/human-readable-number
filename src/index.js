@@ -1,7 +1,7 @@
 module.exports = function toReadable(n) {
 
     var string = n.toString(),
-        units, tens, scales, start, end, chunks, chunksLen, chunk, ints, i, word, words;
+        units, tens, start, end, chunks, chunksLen, chunk, ints, i, word, words;
 
 
     /* Is number zero? */
@@ -15,9 +15,6 @@ module.exports = function toReadable(n) {
     /* Array of tens as words */
     tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
-    /* Array of scales as words */
-    scales = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quatttuor-decillion', 'quindecillion', 'sexdecillion', 'septen-decillion', 'octodecillion', 'novemdecillion', 'vigintillion', 'centillion'];
-
     /* Split user arguemnt into 3 digit chunks from right to left */
     start = string.length;
     chunks = [];
@@ -25,12 +22,7 @@ module.exports = function toReadable(n) {
         end = start;
         chunks.push(string.slice((start = Math.max(0, start - 3)), end));
     }
-
-    /* Check if function has enough scale words to be able to stringify the user argument */
     chunksLen = chunks.length;
-    if (chunksLen > scales.length) {
-        return '';
-    }
 
     /* Stringify each integer in each chunk */
     words = [];
@@ -48,11 +40,6 @@ module.exports = function toReadable(n) {
                 ints[0] += 10;
             }
 
-            /* Add scale word if chunk is not zero and array item exists */
-            if ((word = scales[i])) {
-                words.push(word);
-            }
-
             /* Add unit word if array item exists */
             if ((word = units[ints[0]])) {
                 words.push(word);
@@ -67,11 +54,8 @@ module.exports = function toReadable(n) {
             if ((word = units[ints[2]])) {
                 words.push(word + ' hundred');
             }
-
         }
-
     }
-
     return words.reverse().join(' ');
 
 }
